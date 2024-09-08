@@ -1,0 +1,64 @@
+#contents {
+    max-width: 750px;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    margin-top: 3vh;
+    margin-bottom: 10vh;
+    text-justify: center;
+    font-family: monospace;
+}
+
+#back-link {
+    font-size: 16px;
+}
+
+#title {
+    font-size: 22px; 
+    font-weight: bold; 
+}
+
+#date {
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+p, li {
+    line-height: 20px;
+    font-size: 16px;
+    text-justify: center; 
+}
+
+hr {
+  /* width: 75vw;*/
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline; 
+    color: blueviolet; 
+}
+
+/* phone viewport */
+@media (min-width: 375px) {
+    p {
+        font-size: 14px;
+    }
+}
+
+/* non-phone viewport */
+@media (min-width: 415px) {
+    p {
+        font-size: 16px;
+    }
+}
+
+#responsive-image {
+    max-width: 750px;
+    max-height: 750px;
+    width: 100%;
+    height: auto;
+}

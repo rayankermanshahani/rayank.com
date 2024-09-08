@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>elegance in ml</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../styles/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../styles/writingstyle.css" />
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            margin: 0 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="contents">
+        <br>
+        <br>
+        <br>
+        <div id="date">2024/05/20 - ongoing</div>
+        <br>
+        <br>
+        <div id="title">elegance in ml (WIP)</div>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <p>I've made an inexhaustive list of ideas (in no particular order) that I've encountered throughout machine
+            learning that I find elegant enough to stick with me.</p>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <ul>
+            <li><u>artificial neurons</u></li>
+            <br>
+            <p>A mathematical function inspired by biological neurons. These are the fundamental units that
+                artificial neural networks are comprised of.</p>
+            <br>
+            \[ y = f\left( \sum_{i=1}^{n} w_i x_i + b \right) \]
+            <br>
+            <p>where:</p>
+            <br>
+            <ul>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(x\) is a vector containing the neuron's input</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(w\) is a vector containing the neuron's weights (parameters)</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(b\) is a scalar containing the neuron's bias</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(n\) is the dimensionality of the input and weight vectors</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(f\) is a function that applies a nonlinear transformation</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(y\) is a scalar containing the neuron's output</p>
+
+            </ul>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <li><u> perplexity</u></li>
+            <br>
+            <br>
+            <p>A measurement of how well a probabilistic model predicts a sample from a discrete probability
+                distribution. In the context of language models, it
+                measures the uncertainty of the model in predicting the next token in a sequence. The lower the
+                model's perplexity score, the more certain it is about its predictions</p>
+            <br>
+            \[ P(W) = e^{-\frac{1}{N} \sum_{i=1}^{N} \ln P(w_i \mid w_1, w_2, \ldots, w_{i-1})}
+            \]
+            <br>
+            <p>where:</p>
+            <br>
+            <ul>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \( W \) is a sequence of tokens</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \( N \) is the number of tokens in the sequence</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \( P \) is the probabilistic model</p>
+            </ul>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <li><u>one-hot encoding</u></li>
+            <br>
+            <br>
+            <p>A technique for converting categorical data into a numerical format. Each example is transformed into a
+                binary vector whose elements are all 0 except for the element corresponding to the specific category of
+                the example, which is set to 1.</p>
+            <br>
+            <p>eg. if red, green, and blue are three categories, their one-hot encoded representation would be:</p>
+            <br>
+            <ul>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; red: \([1, 0, 0]\)</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; green: \([0, 1, 0]\)</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; blue: \([0, 0, 1]\)</p>
+            </ul>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <li><u>softmax</u></li>
+            <br>
+            <br>
+            <p>A function that converts a vector of values into a probability distribution. Often used in the output
+                layer of a neural network to represent categorical probability distributions.
+            </p>
+            <br>
+            \[ \sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^{K} e^{z_j}} \]
+            <br>
+            <p>where:</p>
+            <br>
+            <ul>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(\sigma(\mathbf{z})_i\) is the \(i\)-th component of the softmax output
+                    vector</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(z_i\) is the \(i\)-th component of the input vector \(\mathbf{z}\)</p>
+                <br>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp; \(K\) is the number of classes</p>
+            </ul>
+            <br>
+            <br>
+            <p>eg:</p>
+            <br>
+            <div class="container">
+                <div>
+                    \(\mathbf{z}=\)
+                </div>
+                <div>
+                    \[
+                    \begin{bmatrix}
+                    1.3 \\
+                    5.1 \\
+                    2.2 \\
+                    0.7 \\
+                    1.1
+                    \end{bmatrix}
+                    \]
+                </div>
+                <div class="arrow">
+                    \[
+                    \xrightarrow{}
+                    <!-- {\mathbf{\sigma}} -->
+                    \]
+                </div>
+                <div>
+                    \(\sigma(\mathbf{z})=\)
+                </div>
+                <div>
+                    \[
+                    \begin{bmatrix}
+                    0.02 \\
+                    0.90 \\
+                    0.05 \\
+                    0.01 \\
+                    0.02
+                    \end{bmatrix}
+                    \]
+                </div>
+            </div>
+            <br>
+            <br>
+            <hr>
+            <br>
+            <br>
+            <li><u>activation functions</u></li>
+            <br>
+            <br>
+            <li><u>stochastic gradient descent</u></li>
+            <br>
+            <br>
+            <li><u>inductive biases</u></li>
+            <br>
+            <br>
+            <li><u>bias-variance tradeoff</u></li>
+        </ul>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <a href="../../writing.html" id="back-link"> &lt; return </a>
+    </div>
+</body>
+
+</html>
