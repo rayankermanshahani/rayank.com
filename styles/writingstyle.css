@@ -22,6 +22,10 @@
     font-weight: lighter;
 }
 
+ul {
+    margin-left: 5vw;
+}
+
 p, li {
     line-height: 20px;
     font-size: 16px;

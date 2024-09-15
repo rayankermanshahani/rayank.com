@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes on Diffusion Models</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../styles/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../styles/writingstyle.css" />
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow {
+            margin: 0 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="contents">
+        <br>
+        <br>
+        <br>
+        <div id="date">2024/09/14</div>
+        <br>
+        <br>
+        <div id="title">Notes on Diffusion Models</div>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <p>Diffusion models are a class of generative models that are generally comprised of:</p>
+        <br>
+        <ul>
+            <p>- a target distribution that we aim to sample from (eg. an image space), \( p^* \)</p>
+            <br>
+            <p>- a base distribution that should be easy to sample from (eg. a Gaussian), \( q \)</p>
+            <br>
+            <p>- a forward diffusion process (used during training) where we gradually add noise to a clean sample from the target distribution until it resembles a sample from the base distribution (ie. pure Gaussian noise): \( x_{t+1} = x_t + \eta_{t} \), where \( x_0 \sim p^* \), \( x_T \sim q \), and \( \eta_t \) is sampled from a normal distribution determined by a noise scheduler</p>
+            <br>
+            <p>- a sequence of marginally adjacent distributions \( \{ p_0, p_1, \dots, p_T \} \) that interpolate between the target and base distributions, where \( p_0 = p^* \) and \( p_T = q \)</p>
+            <br>
+            <p>- a learned reverse sampler that works along this sequence by starting at the base distribution \( q = p_T \) and transforming each intermediate distribution \( p_t \) into the one that precedes it \( p_{t-1} \) until it reaches the target distribution \( p^* = p_0 \)</p>
+        </ul>
+        <br>
+        <br>
+        <p>The two most types of reverse samplers for diffusion models are the denoising diffusion probabilistic model (DDPM) and the denoising diffusion implicit model (DDIM). Where they diverge is that the DDPM uses stochasticity in its journey back from pure noise to the target distribution whereas the DDIM has a more deterministic path.</p>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <a href="../../writing.html" id="back-link"> &lt; return </a>
+    </div>
+</body>
+
+</html>
