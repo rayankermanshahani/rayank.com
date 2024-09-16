@@ -36,23 +36,57 @@
         <br>
         <hr>
         <br>
+        <img id="responsive-image" src="../../images/diffusion-dog.png" alt="Diffusion Process">
         <br>
-        <p>Diffusion models are a class of generative models that are generally comprised of:</p>
+        <br>
+        <p>Diffusion models are a class of generative models that are used to create high-quality synthetic data. At a high level, they work by learning how to reverse a process where an initial dataset of images, audio, video, etc. is transformed into pure noise. Models that successfully learn this denoising process can generate realistic samples from their training set's distribution, starting with nothing but pure noise.</p>
+        <br>
+        <br>
+        <p>Diffusion models are generally comprised of:</p>
         <br>
         <ul>
-            <p>- a target distribution that we aim to sample from (eg. an image space), \( p^* \)</p>
+            <p>- a target distribution that we aim to sample from (eg. an image space): \( p^* \)</p>
             <br>
-            <p>- a base distribution that should be easy to sample from (eg. a Gaussian), \( q \)</p>
+            <p>- a base distribution that should be easy to sample from (eg. a Gaussian): \( q \)</p>
             <br>
-            <p>- a forward diffusion process (used during training) where we gradually add noise to a clean sample from the target distribution until it resembles a sample from the base distribution (ie. pure Gaussian noise): \( x_{t+1} = x_t + \eta_{t} \), where \( x_0 \sim p^* \), \( x_T \sim q \), and \( \eta_t \) is sampled from a normal distribution determined by a noise scheduler</p>
+            <p>- a sequence of marginally adjacent distributions that interpolate between the target and base distributions: \( \{ p_0, p_1, \dots, p_T \} \), where \( p_0 = p^* \) and \( p_T = q \)</p>
             <br>
-            <p>- a sequence of marginally adjacent distributions \( \{ p_0, p_1, \dots, p_T \} \) that interpolate between the target and base distributions, where \( p_0 = p^* \) and \( p_T = q \)</p>
+            <p>- a forward diffusion process (used during training) where we gradually add noise to a clean sample from the target distribution until it resembles a sample from the base distribution (ie. pure Gaussian noise): \( x_{t+\Delta t} = x_t + \eta_{t} \), where \( x_0 \sim p^* \), \( x_T \sim q \), and \( \eta_t \sim \mathcal{N}(0, \sigma^2_q \Delta t) \) is some amount of Gaussian noise that's predetermined by a noise scheduler</p>
             <br>
-            <p>- a learned reverse sampler that works along this sequence by starting at the base distribution \( q = p_T \) and transforming each intermediate distribution \( p_t \) into the one that precedes it \( p_{t-1} \) until it reaches the target distribution \( p^* = p_0 \)</p>
+            <p>- a learned reverse sampler that works along this sequence by starting at the base distribution \( p_T = q \) and transforming each intermediate distribution \( p_t \) into the preceding distribution \( p_{t-1} \) until it reaches the target distribution \( p_0 = p^* \)</p>
         </ul>
         <br>
         <br>
-        <p>The two most types of reverse samplers for diffusion models are the denoising diffusion probabilistic model (DDPM) and the denoising diffusion implicit model (DDIM). Where they diverge is that the DDPM uses stochasticity in its journey back from pure noise to the target distribution whereas the DDIM has a more deterministic path.</p>
+        <p>The two main types of reverse samplers are the Denoising Diffusion Probabilistic Model (DDPM) and the Denoising Diffusion Implicit Model (DDIM). The most important difference between the two is that the DDPM uses stochasticity in its journey from pure noise back to the target distribution whereas the DDIM has a more deterministic path.</p>
+        <br>
+        <br>
+        <p>In both cases, the reverse sampler uses a neural network to predict how much noise was added at each step in the forward pass. This is done by training the network to estimate the mean \( \mu_{t - \Delta t}(x_t) \) of the conditional distribution \( p(x_{t-\Delta t} | x_t) \) at any given timestep \(t\). Finding this mean at each timestep is sufficient for sampling from the previous timestep's probability distribution because of a few assumptions we are working with. The key idea is that the conditional distribution between timesteps is Gaussian with a predetermined variance, which allows us to fully characterize it once we learn its mean. The neural network backbone that learns to predict the noise added at each timestep is usually built upon a <a href="https://arxiv.org/abs/1505.04597" target="_blank">U-Net</a> or a <a href="https://arxiv.org/abs/2010.11929" target="_blank">Vision Transformer (ViT)</a> architecture.</p>
+</p>
+        <br>
+        <br>
+        <p>The <u>DDPM Reverse Sampler</u> update rule for generating a denoised sample \(\hat{x}_{t-\Delta t}\) given an input \(x_t\) at timestep \(t\):</p>
+        <p>\[ \hat{x}_{t-\Delta t} \gets \mu_{t-\Delta t}(x_t) + \mathcal{N}(0,\sigma^{2}_{q}\Delta t)\]</p>
+        <p>A noise term is added to the neural network's prediction in order to introduce randomness and let the sampler explore different possible paths through latent space. The stochastic nature of this approach allows the model to generate diverse outputs and potentially capture more complex distributions at the cost of requiring more sampling steps in order to converge on the target distribution.</p>
+        <br>
+        <br>
+        <p>The <u>DDIM Reverse Sampler</u> update rule for generating a denoised sample \(\hat{x}_{t-\Delta t}\) given an input \(x_t\) at timestep \(t\):</p>
+        <p>\[ \hat{x}_{t-\Delta t} \gets x_t + \lambda(\mu_{t-\Delta t}(x_t) - x_t)\]</p>
+        <p>In contrast to DDPMs, this process is deterministic as it opts for a direct  update rule without any added noise. The next sample is calculated by interpolating between the current sample and the neural network's estimated mean, controlled by a parameter \(\lambda\). This parameter acts as a scheduled scaling factor, effectively determining how much each step's update depends on the neural network's prediction vs the current sample. When \( \lambda = 1\), the sampler fully relies on the neural network and when \( \lambda = 0 \) there is no update at all. This approach ensures a consistent and reproducible trajectory through latent space for any given input, enabling faster sampling and more control over the generation proccess at the potential cost of reduced output diversity.</p>
+        <br>
+        <br>
+        <p>The general <u>training process</u> for diffusion models looks something like:</p> 
+        <ul>
+            <p>1. Take clean sample \(x_0\) from the training data (ie. target distribution)</p>
+            <p>2. Randomly choose a timestep \(t\)</p>
+            <p>3. Sample some Gaussian noise \(\epsilon\)</p>
+            <p>4. Apply the forward diffusion process to add noise the sample until \(t\) is reached, yielding \(x_t\)</p>
+            <p>5. Neural network predicts how much noise was added \(\hat{\epsilon}\) given \(x_t\) and \(t\)</p>
+            <p>6. Loss is calcualted as the mean squared error between the predicted noise \(\hat{\epsilon}\) and the actual noise added \(\epsilon\)</p>
+            <p>7. The neural network is optimized to minimize this loss, ideally learning to denoise any sample at any timestep</p>
+        </ul>
+        <br>
+        <br>
+        <p>In practical applications, the choice between DDPMs and DDIMs comes down to a tradeoff between sampling speed and output diversity. This brings into question some more specific requirements / constraints for the application, such as computational resources, desired output diversity, generation speed, etc.</p>
         <br>
         <br>
         <hr>
