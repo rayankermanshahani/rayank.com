@@ -80,8 +80,8 @@
             <p>2. Randomly choose a timestep \(t\)</p>
             <p>3. Sample some Gaussian noise \(\epsilon\)</p>
             <p>4. Apply the forward diffusion process to add noise the sample until \(t\) is reached, yielding \(x_t\)</p>
-            <p>5. Neural network predicts how much noise was added \(\hat{\epsilon}\) given \(x_t\) and \(t\)</p>
-            <p>6. Loss is calcualted as the mean squared error between the predicted noise \(\hat{\epsilon}\) and the actual noise added \(\epsilon\)</p>
+            <p>5. Given \(x_t\) and \(t\), the neural network predicts how much noise \(\hat{\epsilon}\) was added to the sample</p>
+            <p>6. Calculate the loss as the mean squared error between the predicted noise \(\hat{\epsilon}\) and the actual noise \(\epsilon\) that was added</p>
             <p>7. The neural network is optimized to minimize this loss, ideally learning to denoise any sample at any timestep</p>
         </ul>
         <br>
