@@ -66,3 +66,20 @@ a:hover {
     width: 100%;
     height: auto;
 }
+
+/* code blocks */
+pre {
+  background: #f6f8fa;       /* Light gray background */
+  padding: 12px;             /* Adequate padding */
+  font-size: 14px;             /* Adequate padding */
+  line-height: 20px;
+  border-radius: 5px;        /* Slightly rounded corners */
+  overflow-x: auto;          /* Horizontal scrolling for long lines */
+  border: 1px solid #e1e4e8; /* Light border for definition */
+}
+
+code {
+  font-family: monospace;
+  color: #24292e;            /* Darker text color for contrast */
+}
+
